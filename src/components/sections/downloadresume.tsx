@@ -18,16 +18,15 @@ export default function DownloadResume() {
     );
 
     // ✅ 2. SEND DATA TO BACKEND (NON-BLOCKING)
-    fetch("http://localhost:5000/lead", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ firstName, lastName, email })
-    }).catch(err => {
-      console.error("Lead error:", err);
-    });
-  };
+   fetch("https://salesforce-react-portfolio.onrender.com/lead", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ firstName, lastName, email })
+}).catch(err => {
+  console.error("Lead error:", err);
+});
 
   return (
     <section
