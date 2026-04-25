@@ -1,34 +1,51 @@
+import { useEffect } from "react";
+
+declare global {
+  interface Window {
+    embeddedservice_bootstrap: any;
+  }
+}
+
 export default function AgentWidget() {
+  useEffect(() => {
+    function initEmbeddedMessaging() {
+      try {
+        window.embeddedservice_bootstrap.settings.language = "en_US";
 
-  const startChat = async () => {
+        window.embeddedservice_bootstrap.init(
+          "00DgL00000OLNLZ",
+          "Portfolio_Web_Chat",
+          "https://orgfarm-ec702c7fe6-dev-ed.develop.my.site.com/ESWPortfolioWebChat1777093773265",
+          {
+            scrt2URL:
+              "https://orgfarm-ec702c7fe6-dev-ed.my.salesforce-scrt.com"
+          }
+        );
+      } catch (err) {
+        console.error("Error loading Embedded Messaging:", err);
+      }
+    }
 
-    const salesforceConfig = {
-      organizationId: "00DgL00000OLNLZ",
-      developerName: "Portfolio_Custom_Client_Deployment",
-      url: "https://orgfarm-ec702c7fe6-dev-ed.develop.my.salesforce-scrt.com"
-    };
+    const existing = document.querySelector(
+      'script[data-salesforce="true"]'
+    );
 
-    console.log("Connecting to Agentforce...", salesforceConfig);
+    if (!existing) {
+      const script = document.createElement("script");
 
-    // This is where the Salesforce Custom Client SDK init goes.
-    // Replace this with the SDK init from Salesforce docs.
-  };
+      script.src =
+        "https://orgfarm-ec702c7fe6-dev-ed.develop.my.site.com/ESWPortfolioWebChat1777093773265/assets/js/bootstrap.min.js";
 
-  return (
-    <button
-      onClick={startChat}
-      style={{
-        position: "fixed",
-        bottom: "24px",
-        right: "24px",
-        zIndex: 999999,
-        background: "#fff",
-        color: "#111",
-        borderRadius: "14px",
-        padding: "14px 20px"
-      }}
-    >
-      Chat With My AI Agent
-    </button>
-  );
+      script.async = true;
+      script.setAttribute("data-salesforce", "true");
+
+      script.onload = initEmbeddedMessaging;
+
+      document.body.appendChild(script);
+    } else {
+      initEmbeddedMessaging();
+    }
+  }, []);
+
+  return null;
 }
