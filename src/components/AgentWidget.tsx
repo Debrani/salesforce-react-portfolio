@@ -6,65 +6,38 @@ declare global {
   }
 }
 
-let isInitialized = false;
-
 export default function AgentWidget() {
   useEffect(() => {
-    const scriptId = "salesforce-embedded-messaging";
-
-    // Prevent duplicate script injection
-    if (document.getElementById(scriptId)) {
-      initChat();
-      return;
-    }
+    if (window.embeddedservice_bootstrap) return;
 
     const script = document.createElement("script");
-    script.id = scriptId;
 
     script.src =
-      "https://orgfarm-ec702c7fe6-dev-ed.develop.my.site.com/ESWPortfolioWebsiteChat1777095730674/assets/js/bootstrap.min.js";
+      "https://orgfarm-ec702c7fe6-dev-ed.develop.my.site.com/ESWAgentWeb1777102142723/assets/js/bootstrap.min.js";
 
     script.async = true;
 
     script.onload = () => {
-      console.log("Salesforce script loaded");
-      initChat();
-    };
+      try {
+        window.embeddedservice_bootstrap.settings.language = "en_US";
 
-    script.onerror = (err) => {
-      console.error("Failed to load Salesforce script:", err);
+        window.embeddedservice_bootstrap.init(
+          "00DgL00000OLNLZ",
+          "Agent_Web",
+          "https://orgfarm-ec702c7fe6-dev-ed.develop.my.site.com/ESWAgentWeb1777102142723",
+          {
+            scrt2URL:
+              "https://orgfarm-ec702c7fe6-dev-ed.develop.my.salesforce-scrt.com",
+          }
+        );
+
+        console.log("✅ Chat Initialized");
+      } catch (e) {
+        console.error(e);
+      }
     };
 
     document.body.appendChild(script);
-
-    function initChat() {
-      if (isInitialized) return;
-
-      const waitForBootstrap = setInterval(() => {
-        if (window.embeddedservice_bootstrap) {
-          clearInterval(waitForBootstrap);
-
-          try {
-            window.embeddedservice_bootstrap.settings.language = "en_US";
-
-            window.embeddedservice_bootstrap.init(
-              "00DgL00000OLNLZ",
-              "Portfolio_Website_Chat",
-              "https://orgfarm-ec702c7fe6-dev-ed.develop.my.site.com/ESWPortfolioWebsiteChat1777095730674",
-              {
-                scrt2URL:
-                  "https://orgfarm-ec702c7fe6-dev-ed.my.salesforce-scrt.com"
-              }
-            );
-
-            isInitialized = true;
-            console.log("Salesforce Chat Initialized Successfully");
-          } catch (err) {
-            console.error("Salesforce init error:", err);
-          }
-        }
-      }, 100);
-    }
   }, []);
 
   return null;
