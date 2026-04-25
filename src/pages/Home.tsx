@@ -6,7 +6,6 @@ import Projects from "../components/sections/Projects";
 import Certifications from "../components/sections/Certifications";
 import DownloadResume from "../components/sections/downloadresume";
 import Blogs from "../components/sections/Blogs";
-import SalesforceDashboard from "../components/sections/SalesforceDashboard";
 import ParticleBackground from "../components/ParticleBackground";
 import AgentWidget from "../components/AgentWidget";
 export default function Home() {
@@ -22,7 +21,7 @@ export default function Home() {
           <Certifications />
           <DownloadResume/>
           <Blogs />
-          <SalesforceDashboard />
+
           <AgentWidget />
           
         </main>
