@@ -3,7 +3,7 @@ const axios = require("axios");
 const cors = require("cors");
 
 const app = express();
-const cors = require("cors");
+
 
 app.use(cors({
   origin: "https://salesforceportfolio.netlify.app",
