@@ -3,7 +3,13 @@ const axios = require("axios");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
+const cors = require("cors");
+
+app.use(cors({
+  origin: "https://salesforceportfolio.netlify.app",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+}));
 app.use(express.json());
 
 // 🔑 Salesforce credentials
@@ -72,8 +78,9 @@ app.post("/lead", async (req, res) => {
     });
   }
 });
+//start server
+const PORT = process.env.PORT || 5000;
 
-// 🚀 Start server
-app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
